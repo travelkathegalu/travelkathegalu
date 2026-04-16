@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Social Media Manager Web App for Travel Kathegalu">
+    <title>Travel ಕಥೆಗಳು ✈️🌍 | Creator Dashboard</title>
+    <!-- Fonts and Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css?v=2">
+    <script src="app.js?v=2" defer></script>
+</head>
+<body class="dark-theme">
+    <div class="background-effects">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+    </div>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar glass-panel">
+            <div class="brand">
+                <div class="brand-avatar">✈️</div>
+                <h2>Travel ಕಥೆಗಳು</h2>
+                <span class="user-handle">@travel_kathegalu</span>
+            </div>
+            
+            <ul class="nav-links">
+                <li class="nav-item active" data-target="dashboard">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span>Dashboard</span>
+                </li>
+                <li class="nav-item" data-target="content-board">
+                    <i class="fa-solid fa-clapperboard"></i>
+                    <span>Content Planner</span>
+                </li>
+                <li class="nav-item" data-target="collabs">
+                    <i class="fa-solid fa-handshake"></i>
+                    <span>Collab CRM</span>
+                </li>
+                <li class="nav-item" data-target="vault">
+                    <i class="fa-solid fa-hashtag"></i>
+                    <span>Hashtag Vault</span>
+                </li>
+            </ul>
+
+            <div class="nav-footer">
+                <div class="premium-badge">
+                    <i class="fa-solid fa-crown text-warning"></i> Creator Pro
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="top-header">
+                <div>
+                    <h1 id="page-title"><span id="greeting">Good Morning</span>, Travel ✈️</h1>
+                    <p id="page-subtitle" class="text-muted">Here's what your travel empire looks like today.</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-icon"><i class="fa-regular fa-bell"></i><span class="notification-dot"></span></button>
+                    <button class="btn btn-primary glow-btn" id="add-btn"><i class="fa-solid fa-plus"></i> New Pitch</button>
+                </div>
+            </header>
+
+            <!-- 1. Dashboard View (Upgraded) -->
+            <section id="dashboard" class="view-section active">
+                <div class="stats-grid">
+                    <div class="stat-card glass-panel hover-glow">
+                        <div class="stat-icon followers"><i class="fa-solid fa-users"></i></div>
+                        <div class="stat-info">
+                            <h3>Followers</h3>
+                            <div class="stat-value"><span id="live-followers">13,240</span> <span class="trend up"><i class="fa-solid fa-arrow-trend-up"></i> +1.2%</span></div>
+                            <div class="stat-mini-chart" id="sparkline-1"></div>
+                        </div>
+                    </div>
+                    <div class="stat-card glass-panel hover-glow">
+                        <div class="stat-icon posts"><i class="fa-solid fa-camera"></i></div>
+                        <div class="stat-info">
+                            <h3>Total Posts</h3> /* Changed from Accounts Reached to use live post data */
+                            <div class="stat-value"><span id="live-posts">123</span> <span class="trend up"><i class="fa-solid fa-arrow-trend-up"></i> +3</span></div>
+                            <p class="stat-subtitle">Lifetime</p>
+                        </div>
+                    </div>
+                    <div class="stat-card glass-panel hover-glow">
+                        <div class="stat-icon rev"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+                        <div class="stat-info">
+                            <h3>Collab Revenue</h3>
+                            <div class="stat-value">₹24,500 <span class="trend stable"><i class="fa-solid fa-minus"></i></span></div>
+                            <p class="stat-subtitle">This Month</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chart & Goals Row -->
+                <div class="dashboard-middle-grid">
+                    <div class="panel glass-panel chart-panel">
+                        <div class="panel-header">
+                            <div>
+                                <h3>Reach Overview</h3>
+                                <p class="text-muted text-small">Daily impressions across all posts & reels</p>
+                            </div>
+                            <select class="glass-select"><option>Last 7 Days</option><option>Last 30 Days</option></select>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="reachChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="panel glass-panel goal-panel">
+                        <div class="panel-header">
+                            <h3>Next Milestone</h3>
+                        </div>
+                        <div class="circular-progress-container">
+                            <div class="circular-progress">
+                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                                    <circle class="progress-bg" cx="50" cy="50" r="40" />
+                                    <circle class="progress-bar" cx="50" cy="50" r="40" />
+                                </svg>
+                                <div class="progress-content">
+                                    <span class="progress-value">86<span class="percent">%</span></span>
+                                    <span class="progress-label">to 15K</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="milestone-details">
+                            <p>You need <strong>1,760</strong> more followers to reach your next monetization tier!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deliverables & Quick Capture -->
+                <div class="dashboard-bottom-grid">
+                    <div class="panel glass-panel">
+                        <div class="panel-header">
+                            <h3>Upcoming Deliverables</h3>
+                            <button class="btn-text">View All</button>
+                        </div>
+                        <ul class="task-list">
+                            <li class="task-item pending">
+                                <div class="task-icon"><i class="fa-regular fa-clock"></i></div>
+                                <div class="task-details">
+                                    <h4>Rameshwaram Cafe Review</h4>
+                                    <span class="pill-badge type-reel">1 Reel, 2 Story mentions</span>
+                                </div>
+                                <div class="task-due text-alert">Due: Tomorrow</div>
+                            </li>
+                            <li class="task-item active-task">
+                                <div class="task-icon"><i class="fa-solid fa-video"></i></div>
+                                <div class="task-details">
+                                    <h4>Nandi Hills Sunrise (Tribe)</h4>
+                                    <span class="pill-badge type-carousel">Carousel Post</span>
+                                </div>
+                                <div class="task-due text-warning">Filming</div>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="panel glass-panel">
+                        <div class="panel-header">
+                            <h3>Quick Capture</h3>
+                        </div>
+                        <div class="quick-capture">
+                            <textarea placeholder="Got a new reel idea? Drop it here..."></textarea>
+                            <div class="capture-actions">
+                                <button class="btn-icon"><i class="fa-solid fa-image"></i></button>
+                                <button class="btn btn-secondary glow-btn-subtle">Save Idea</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. Content Planner View (Kanban) -->
+            <section id="content-board" class="view-section">
+                <div class="kanban-board">
+                    <div class="kanban-column" id="ideas-col">
+                        <div class="column-header">
+                            <h3>Ideas <span>3</span></h3>
+                        </div>
+                        <div class="kanban-cards">
+                            <div class="kanban-card glass-panel" draggable="true">
+                                <span class="badge tag-food">Food</span>
+                                <h4>Top 5 Dosas in BLR</h4>
+                                <p>Need voiceover script</p>
+                            </div>
+                            <div class="kanban-card glass-panel" draggable="true">
+                                <span class="badge tag-stay">Staycation</span>
+                                <h4>Coorg Hidden Homestay</h4>
+                                <p>Checking availability</p>
+                            </div>
+                            <div class="kanban-card glass-panel" draggable="true">
+                                <span class="badge tag-travel">Travel</span>
+                                <h4>Mysore Palace Night View</h4>
+                                <p>Need drone shots</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kanban-column" id="planning-col">
+                        <div class="column-header">
+                            <h3>Filming & Planning <span>1</span></h3>
+                        </div>
+                        <div class="kanban-cards">
+                            <div class="kanban-card glass-panel" draggable="true">
+                                <span class="badge tag-food">Food</span>
+                                <h4>Vidyarthi Bhavan POV</h4>
+                                <p>Going this Sunday morning</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kanban-column" id="editing-col">
+                        <div class="column-header">
+                            <h3>Editing <span>1</span></h3>
+                        </div>
+                        <div class="kanban-cards">
+                            <div class="kanban-card glass-panel" draggable="true">
+                                <span class="badge tag-travel">Travel</span>
+                                <h4>Metro Commute Aesthetic</h4>
+                                <p>Color grading left</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kanban-column" id="ready-col">
+                        <div class="column-header">
+                            <h3>Ready to Post <span>1</span></h3>
+                        </div>
+                        <div class="kanban-cards">
+                            <div class="kanban-card glass-panel" draggable="true">
+                                <span class="badge tag-stay">Staycation</span>
+                                <h4>Gokarna Beach Trek</h4>
+                                <p>Scheduled for Friday 6 PM</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. Collab Tracker View -->
+            <section id="collabs" class="view-section">
+                <div class="panel glass-panel full-width">
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Brand / Partner</th>
+                                    <th>Status</th>
+                                    <th>Deliverables</th>
+                                    <th>Revenue</th>
+                                    <th>Due Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="table-brand">
+                                            <div class="brand-logo" style="background:#f97316">M</div>
+                                            <strong>MakeMyTrip</strong>
+                                        </div>
+                                    </td>
+                                    <td><span class="status-badge status-negotiating">Negotiating</span></td>
+                                    <td>1 Reel + Link in Bio</td>
+                                    <td>₹15,000</td>
+                                    <td>TBD</td>
+                                    <td><button class="btn-icon"><i class="fa-solid fa-ellipsis-vertical"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="table-brand">
+                                            <div class="brand-logo" style="background:#3b82f6">T</div>
+                                            <strong>Third Wave Coffee</strong>
+                                        </div>
+                                    </td>
+                                    <td><span class="status-badge status-active">Filming</span></td>
+                                    <td>1 Reel, 2 Stories</td>
+                                    <td>Barter + ₹5,000</td>
+                                    <td>Apr 12</td>
+                                    <td><button class="btn-icon"><i class="fa-solid fa-ellipsis-vertical"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="table-brand">
+                                            <div class="brand-logo" style="background:#10b981">K</div>
+                                            <strong>Karnataka Tourism</strong>
+                                        </div>
+                                    </td>
+                                    <td><span class="status-badge status-completed">Completed</span></td>
+                                    <td>Carousel Post</td>
+                                    <td>₹8,000</td>
+                                    <td>Mar 25</td>
+                                    <td><button class="btn-icon"><i class="fa-solid fa-ellipsis-vertical"></i></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. Hashtag Vault View -->
+            <section id="vault" class="view-section">
+                <div class="vault-grid">
+                    <div class="vault-card glass-panel group-hover-glow">
+                        <div class="vault-header">
+                            <h3>Bengaluru Food</h3>
+                            <button class="btn-icon copy-btn"><i class="fa-regular fa-copy"></i></button>
+                        </div>
+                        <p class="hashtags">#bengalurufood #nammabengaluru #bengalurudiaries #foodie #karnatakafood #southindianfood #bangalorecafes #bangalorefoodies</p>
+                    </div>
+                    
+                    <div class="vault-card glass-panel group-hover-glow">
+                        <div class="vault-header">
+                            <h3>Travel & Nature</h3>
+                            <button class="btn-icon copy-btn"><i class="fa-regular fa-copy"></i></button>
+                        </div>
+                        <p class="hashtags">#karnatakatourism #incredibleindia #travelkarnataka #wanderlust #naturelovers #travelgram #westernghats #trekkingindia</p>
+                    </div>
+                    
+                    <div class="vault-card glass-panel group-hover-glow">
+                        <div class="vault-header">
+                            <h3>Staycations</h3>
+                            <button class="btn-icon copy-btn"><i class="fa-regular fa-copy"></i></button>
+                        </div>
+                        <p class="hashtags">#staycation #resortsindia #weekendgetaway #airbnbindia #luxurytravel #beautifulhotels #karnatakastays #coorgdiaries</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
