@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const followerEl = document.getElementById('live-followers');
             const erEl = document.getElementById('live-er');
             
-            const response = await fetch('http://127.0.0.1:5000/api/stats');
+            const response = await fetch('/api/stats');
             const data = await response.json();
             
             if (data.followers !== undefined) {
