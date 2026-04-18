@@ -5,27 +5,34 @@ document.addEventListener('DOMContentLoaded', () => {
             const followerEl = document.getElementById('live-followers');
             const erEl = document.getElementById('live-er');
             
+            // 1. Initial professional fallback is already in HTML.
+            // 2. We fetch, but we won't overwrite with "..." or "Error"
             const response = await fetch('/api/stats');
+            
+            // If Vercel returns 504 or other error, catch will handle it
+            if (!response.ok) throw new Error(`API returned ${response.status}`);
+            
             const data = await response.json();
             
-            if (data.followers !== undefined) {
+            if (data.followers) {
                 // Update Followers
                 let formattedFollowers = data.followers >= 1000 ? (data.followers / 1000).toFixed(1) + 'K+' : data.followers;
                 if (followerEl) followerEl.textContent = formattedFollowers;
                 
-                // Update ER
-                if (erEl && data.engagement_rate) erEl.textContent = data.engagement_rate + '%';
+                // Update ER only if we have fresh calculation
+                if (erEl && data.engagement_rate !== null) {
+                    erEl.textContent = data.engagement_rate + '%';
+                }
                 
-                // NOTE: Content grid is hardcoded with 4 specific reels - no auto-overwrite
-                
-                // Update Case Study images & captions from top posts if available
+                // Update Case Study images & captions
                 if (data.recent_posts && data.recent_posts.length >= 7) {
                     const c1 = document.getElementById('case-image-1');
                     const c2 = document.getElementById('case-image-2');
-                    if (c1) c1.src = data.recent_posts[5].local_image;
-                    if (c2) c2.src = data.recent_posts[6].local_image;
                     
-                    // Parse caption into title + description
+                    // We only overwrite if we got valid URLs
+                    if (c1 && data.recent_posts[5].local_image) c1.src = data.recent_posts[5].local_image;
+                    if (c2 && data.recent_posts[6].local_image) c2.src = data.recent_posts[6].local_image;
+                    
                     function cleanCaption(text) {
                         if (!text) return ["Travel Destination", "Exploring the world locally."];
                         const cleanText = text.replace(/#\S+/g, '').replace(/@\S+/g, '').trim();
@@ -51,11 +58,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (desc2) desc2.textContent = d2;
                     }
                 }
-            } else if (data.error) {
-                console.error("IG fetch error:", data.error);
             }
         } catch (error) {
-            console.error("Failed to fetch live stats. Backend might be down.", error);
+            console.warn("Instagram sync deferred:", error.message);
+            // On failure, we keep the HTML defaults (Media Kit values)
         }
     }
     fetchLiveContent();

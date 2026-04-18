@@ -4,28 +4,23 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const followerEl = document.getElementById('live-followers');
             const postEl = document.getElementById('live-posts');
-            if(followerEl) followerEl.textContent = "...";
-            if(postEl) postEl.textContent = "...";
+            
+            // We NO LONGER set to "..." because it looks broken if Vercel is slow.
+            // We keep the existing values from the dashboard as fallback.
             
             const response = await fetch('/api/stats');
+            if (!response.ok) throw new Error(`API returned ${response.status}`);
+            
             const data = await response.json();
             
-            if (data.followers !== undefined) {
-                // Formatting followers (e.g. 13240 -> 13.2K)
+            if (data.followers) {
                 let formattedFollowers = data.followers >= 1000 ? (data.followers / 1000).toFixed(1) + 'K' : data.followers;
                 if(followerEl) followerEl.textContent = formattedFollowers;
                 if(postEl) postEl.textContent = data.total_posts;
-            } else if (data.error) {
-                console.error("IG fetch error:", data.error);
-                if(followerEl) followerEl.textContent = "Error";
-                if(postEl) postEl.textContent = "Error";
             }
         } catch (error) {
-            console.error("Failed to fetch live stats. Backend might be down.", error);
-            const followerEl = document.getElementById('live-followers');
-            const postEl = document.getElementById('live-posts');
-            if(followerEl && followerEl.textContent === "...") followerEl.textContent = "13.2K";
-            if(postEl && postEl.textContent === "...") postEl.textContent = "123";
+            console.warn("Dashboard sync deferred:", error.message);
+            // On failure, we keep the existing dashboard values
         }
     }
     fetchLiveStats();
